@@ -10,7 +10,14 @@ var host = new HostBuilder()
     {
         services.AddApplicationInsightsTelemetryWorkerService();
         services.ConfigureFunctionsApplicationInsights();
-        services.AddDbContext<DataContext>(x => x.UseSqlServer(Environment.GetEnvironmentVariable("SqlServer")));
+
+        var sqlConnectionString = Environment.GetEnvironmentVariable("SqlServer");
+        if (string.IsNullOrEmpty(sqlConnectionString))
+        {
+            throw new InvalidOperationException("Connection string 'SqlServer' not found.");
+        }
+
+        services.AddDbContext<DataContext>(options => options.UseSqlServer(sqlConnectionString));
     })
     .Build();
 

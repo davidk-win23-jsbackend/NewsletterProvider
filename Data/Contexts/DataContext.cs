@@ -6,9 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Contexts;
-
-public class DataContext(DbContextOptions<DataContext> options) : DbContext(options)
+namespace Data.Contexts
 {
-    public DbSet<SubscribeEntity> Subscribers { get; set; }
+    public class DataContext : DbContext
+    {
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        {
+        }
+
+        public DbSet<SubscribeEntity> Subscribers { get; set; }
+    }
 }
